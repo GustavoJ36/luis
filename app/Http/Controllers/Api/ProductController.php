@@ -2,28 +2,29 @@
 
 namespace App\Http\Controllers\Api;
 
+
 use App\Http\Controllers\Controller;
-use App\Models\Product;
 use App\Http\Resources\Product\ProductResource;
 use App\Http\Requests\Product\IndexProductRequest;
 use App\Http\Requests\Product\StoreProductRequest;
 use App\Http\Requests\Product\UpdateProductRequest;
+use App\Repositories\ProductRepository;
 use Illuminate\Http\Request;
 
 class ProductController extends Controller
 {
+    protected $productRepository;
+
+    public function __construct(ProductRepository $productRepository)
+    {
+        $this->productRepository = $productRepository;
+    }
+
     public function index(IndexProductRequest $request)
     {
         $search = $request->get("search");
 
-        $products = Product::orderBy("id", "desc")
-            ->where(function($query) use ($search) {
-                if ($search) {
-                    $query->where("name", "like", "%" . $search . "%");
-                }
-            })
-            ->paginate(20)
-        ;
+        $products = $this->productRepository->getAll($search);
 
         return response()->json([
             "total" => $products->total(),
@@ -33,7 +34,7 @@ class ProductController extends Controller
 
     public function store(StoreProductRequest $request)
     {
-        $product = Product::create($request->all());
+        $product = $this->productRepository->create($request->all());
 
         return response()->json([
             "product" => ProductResource::make($product),
@@ -42,7 +43,7 @@ class ProductController extends Controller
 
     public function show(string $id)
     {
-        $product = Product::findOrFail($id);
+        $product = $this->productRepository->find($id);
 
         return response()->json([
             "product" => ProductResource::make($product),
@@ -51,8 +52,7 @@ class ProductController extends Controller
 
     public function update(UpdateProductRequest $request, string $id)
     {
-        $product = Product::findOrFail($id);
-        $product->update($request->all());
+        $product = $this->productRepository->update($id, $request->all());
 
         return response()->json([
             "product" => ProductResource::make($product),
