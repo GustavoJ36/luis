@@ -18,9 +18,34 @@ class OrderController extends Controller
         $this->orderRepository = $orderRepository;
     }
 
+    /**
+     * Display a listing of orders (paginated).
+     *
+     * @return \Illuminate\Http\Resources\Json\AnonymousResourceCollection
+     */
     public function index()
     {
-       // Implementation for listing orders if needed
+        $orders = $this->orderRepository->getAll();
+        return OrderResource::collection($orders);
+    }
+
+    /**
+     * Display the specified order.
+     *
+     * @param int $id
+     * @return OrderResource|JsonResponse
+     */
+    public function show($id)
+    {
+        $order = $this->orderRepository->findById($id);
+
+        if (!$order) {
+            return response()->json([
+                'message' => 'Order not found'
+            ], 404);
+        }
+
+        return new OrderResource($order);
     }
 
     /**

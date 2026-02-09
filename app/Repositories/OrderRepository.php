@@ -62,4 +62,28 @@ class OrderRepository
             return $order->load('items.product');
         });
     }
+    /**
+     * Get paginated orders.
+     *
+     * @param int $perPage
+     * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator
+     */
+    public function getAll(int $perPage = 10)
+    {
+        return Order::with(['user'])
+            ->withCount('items')
+            ->orderBy('created_at', 'desc')
+            ->paginate($perPage);
+    }
+
+    /**
+     * Find an order by ID with details.
+     *
+     * @param int $id
+     * @return Order|null
+     */
+    public function findById(int $id): ?Order
+    {
+        return Order::with(['user', 'items.product'])->find($id);
+    }
 }

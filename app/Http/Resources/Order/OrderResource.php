@@ -16,10 +16,11 @@ class OrderResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'user_id' => $this->user_id,
-            'total' => (float) $this->total,
-            'items' => OrderItemResource::collection($this->whenLoaded('items')),
+            'customer_name' => $this->user->name ?? 'N/A',
+            'total_amount' => (float) $this->total,
+            'items_count' => $this->items_count ?? $this->items->count(),
             'created_at' => $this->created_at->toDateTimeString(),
+            'items' => OrderItemResource::collection($this->whenLoaded('items')),
         ];
     }
 }
