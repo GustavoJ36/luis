@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Http\Resources\Product\ProductResource;
+use App\Http\Resources\PaginationResource;
 use App\Http\Requests\Product\IndexProductRequest;
 use App\Http\Requests\Product\StoreProductRequest;
 use App\Http\Requests\Product\UpdateProductRequest;
@@ -28,21 +29,7 @@ class ProductController extends Controller
 
         $products = $this->productRepository->getAll($search, $name, $sku);
 
-        return response()->json([
-            "total" => $products->total(),
-            "per_page" => $products->perPage(),
-            "current_page" => $products->currentPage(),
-            "last_page" => $products->lastPage(),
-            "current_page_url" => $products->url($products->currentPage()),
-            // "first_page_url" => $products->url(1),
-            // "last_page_url" => $products->url($products->lastPage()),
-            // "next_page_url" => $products->nextPageUrl(),
-            // "prev_page_url" => $products->previousPageUrl(),
-            "path" => $products->path(),
-            "from" => $products->firstItem(),
-            "to" => $products->lastItem(),
-            "data" => ProductResource::collection($products)->resolve(),
-        ]);
+        return new PaginationResource($products, ProductResource::class);
     }
 
     public function store(StoreProductRequest $request)
