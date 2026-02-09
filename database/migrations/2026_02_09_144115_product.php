@@ -19,6 +19,9 @@ return new class extends Migration
             $table->unsignedInteger('stock');
             $table->timestamps();
             // $table->softDeletes();
+
+            $table->index('sku');
+            $table->index('name');
         });
     }
 
