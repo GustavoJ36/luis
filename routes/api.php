@@ -3,6 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\ProductController;
+use App\Http\Controllers\Api\OrderController;
 
 // Route::get('/user', function (Request $request) {
 //     return $request->user();
@@ -13,3 +14,5 @@ Route::get('products', [ProductController::class, 'index'])->name('products.inde
 Route::post('products', [ProductController::class, 'store'])->name('products.store');
 Route::get('products/{id}', [ProductController::class, 'show'])->name('products.show');
 Route::put('products/{id}', [ProductController::class, 'update'])->name('products.update');
+
+Route::post('orders', [OrderController::class, 'store'])->name('orders.store');
