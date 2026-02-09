@@ -1,0 +1,14 @@
+services:
+    php:
+        build:
+            context: ./
+            dockerfile: Dockerfile
+        container_name: laravelreact    
+        restart: always
+        ports:
+            - 8041:80
+            - 5175:5175
+        volumes:
+            - .:/var/www/html
+volumes:
+    laravelreact: {}
