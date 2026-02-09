@@ -17,4 +17,12 @@ class Product extends Model
         'price',
         'stock',
     ];
+
+    /**
+     * Get the order items for the product.
+     */
+    public function orderItems(): \Illuminate\Database\Eloquent\Relations\HasMany
+    {
+        return $this->hasMany(OrderItem::class);
+    }
 }
