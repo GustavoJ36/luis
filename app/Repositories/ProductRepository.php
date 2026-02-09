@@ -6,7 +6,7 @@ use App\Models\Product;
 
 class ProductRepository
 {
-    public function getAll($search = null, $name = null, $sku = null)
+    public function getAll($search = null, $name = null, $sku = null, $perPage = 20)
     {
         $query = Product::orderBy("id", "desc");
 
@@ -18,7 +18,7 @@ class ProductRepository
             $query->where("sku", "like", "%" . $sku . "%");
         }
 
-        return $query->paginate(20);
+        return $query->paginate($perPage);
     }
 
     public function create(array $data)

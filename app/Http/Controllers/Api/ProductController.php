@@ -26,8 +26,9 @@ class ProductController extends Controller
         $search = $request->get("search");
         $name = $request->get("name");
         $sku = $request->get("sku");
+        $perPage = $request->get("page", 20);
 
-        $products = $this->productRepository->getAll($search, $name, $sku);
+        $products = $this->productRepository->getAll($search, $name, $sku, $perPage);
 
         return new PaginationResource($products, ProductResource::class);
     }

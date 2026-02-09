@@ -27,6 +27,7 @@ class IndexProductRequest extends FormRequest
             "search" => "nullable|string",
             "name" => "nullable|string",
             "sku" => "nullable|string",
+            "page" => "nullable|integer",
         ];
     }
 
