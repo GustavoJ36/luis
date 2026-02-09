@@ -70,10 +70,11 @@ class OrderRepository
      */
     public function getAll(int $perPage = 10)
     {
-        return Order::with(['user'])
+        return Order::with(['user', 'items.product'])
             ->withCount('items')
             ->orderBy('created_at', 'desc')
-            ->paginate($perPage);
+            ->paginate($perPage)
+        ;
     }
 
     /**
