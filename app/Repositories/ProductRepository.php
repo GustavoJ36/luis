@@ -14,7 +14,7 @@ class ProductRepository
                     $query->where("name", "like", "%" . $search . "%");
                 }
             })
-            ->paginate(20);
+            ->paginate(2);
     }
 
     public function create(array $data)

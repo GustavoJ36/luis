@@ -28,7 +28,18 @@ class ProductController extends Controller
 
         return response()->json([
             "total" => $products->total(),
-            "products" => ProductResource::collection($products),
+            "per_page" => $products->perPage(),
+            "current_page" => $products->currentPage(),
+            "last_page" => $products->lastPage(),
+            "current_page_url" => $products->url($products->currentPage()),
+            // "first_page_url" => $products->url(1),
+            // "last_page_url" => $products->url($products->lastPage()),
+            // "next_page_url" => $products->nextPageUrl(),
+            // "prev_page_url" => $products->previousPageUrl(),
+            "path" => $products->path(),
+            "from" => $products->firstItem(),
+            "to" => $products->lastItem(),
+            "data" => ProductResource::collection($products)->resolve(),
         ]);
     }
 
