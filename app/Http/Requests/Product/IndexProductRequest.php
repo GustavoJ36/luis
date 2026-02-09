@@ -25,6 +25,8 @@ class IndexProductRequest extends FormRequest
     {
         return [
             "search" => "nullable|string",
+            "name" => "nullable|string",
+            "sku" => "nullable|string",
         ];
     }
 

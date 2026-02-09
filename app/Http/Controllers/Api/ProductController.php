@@ -23,8 +23,10 @@ class ProductController extends Controller
     public function index(IndexProductRequest $request)
     {
         $search = $request->get("search");
+        $name = $request->get("name");
+        $sku = $request->get("sku");
 
-        $products = $this->productRepository->getAll($search);
+        $products = $this->productRepository->getAll($search, $name, $sku);
 
         return response()->json([
             "total" => $products->total(),

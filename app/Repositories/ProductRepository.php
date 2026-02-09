@@ -6,15 +6,19 @@ use App\Models\Product;
 
 class ProductRepository
 {
-    public function getAll($search = null)
+    public function getAll($search = null, $name = null, $sku = null)
     {
-        return Product::orderBy("id", "desc")
-            ->where(function($query) use ($search) {
-                if ($search) {
-                    $query->where("name", "like", "%" . $search . "%");
-                }
-            })
-            ->paginate(2);
+        $query = Product::orderBy("id", "desc");
+
+        if ($name) {
+            $query->where("name", "like", "%" . $name . "%");
+        }
+
+        if ($sku) {
+            $query->where("sku", "like", "%" . $sku . "%");
+        }
+
+        return $query->paginate(20);
     }
 
     public function create(array $data)
