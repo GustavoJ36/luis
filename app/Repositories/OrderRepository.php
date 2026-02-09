@@ -19,49 +19,105 @@ class OrderRepository
      */
     public function create(array $data): Order
     {
-        return DB::transaction(function () use ($data) {
-            $order = Order::create([
-                'user_id' => $data['user_id'],
-                'total' => 0,
-            ]);
+        // Configurar reintentos para deadlocks comunes
+        $maxRetries = 3;
+        $retryCount = 0;
+        
+        while ($retryCount < $maxRetries) {
+            try {
+                return DB::transaction(function () use ($data) {
+                    $order = Order::create([
+                        'user_id' => $data['user_id'],
+                        'total' => 0,
+                    ]);
 
-            $total = 0;
-
-            foreach ($data['items'] as $item) {
-                // Lock the product row for update to handle concurrency
-                $product = Product::where('id', $item['product_id'])
-                    ->lockForUpdate()
-                    ->first();
-
-                if (!$product) {
-                    throw new Exception("Product ID {$item['product_id']} not found.");
+                    $total = 0;
+                    $orderItemsData = [];
+                    
+                    $productIds = collect($data['items'])->pluck('product_id')->unique();
+                    $lockedProducts = Product::whereIn('id', $productIds)
+                        ->lockForUpdate()
+                        ->get()
+                        ->keyBy('id');
+                    
+                    foreach ($data['items'] as $item) {
+                        $productId = $item['product_id'];
+                        
+                        if (!isset($lockedProducts[$productId])) {
+                            throw new Exception("Product ID {$productId} not found.");
+                        }
+                        
+                        $product = $lockedProducts[$productId];
+                        
+                        if ($product->stock < $item['qty']) {
+                            throw new Exception("Insufficient stock for product: {$product->name}");
+                        }
+                        
+                        // Actualización atómica con verificación
+                        $affectedRows = Product::where('id', $productId)
+                            ->where('stock', '>=', $item['qty'])
+                            ->where('stock', '=', $product->stock) // Verificación adicional de concurrencia
+                            ->update([
+                                'stock' => DB::raw("stock - {$item['qty']}"),
+                                'updated_at' => now()
+                            ])
+                        ;
+                        
+                        if ($affectedRows === 0) {
+                            // El stock cambió entre la lectura y la actualización
+                            throw new Exception("Concurrent modification detected for product: {$product->name}. Please retry.");
+                        }
+                        
+                        // Preparar datos para inserción
+                        $orderItemsData[] = [
+                            'order_id' => $order->id,
+                            'product_id' => $productId,
+                            'quantity' => $item['qty'],
+                            'price_snapshot' => $product->price,
+                            'created_at' => now(),
+                            'updated_at' => now(),
+                        ];
+                        
+                        $total += $product->price * $item['qty'];
+                    }
+                    
+                    // Inserción masiva de items del pedido
+                    if (!empty($orderItemsData)) {
+                        OrderItem::insert($orderItemsData);
+                    }
+                    
+                    // Actualizar total del pedido
+                    $order->update(['total' => $total]);
+                    
+                    return $order->load('items.product');
+                });
+                
+            } catch (Exception $e) {
+                // Si es deadlock, reintentar
+                if (str_contains($e->getMessage(), 'Deadlock') || 
+                    str_contains($e->getMessage(), 'Lock wait timeout') ||
+                    str_contains($e->getMessage(), 'Concurrent modification')) {
+                    
+                    $retryCount++;
+                    
+                    if ($retryCount >= $maxRetries) {
+                        throw new Exception("Failed to create order after {$maxRetries} attempts: " . $e->getMessage());
+                    }
+                    
+                    // Esperar exponencialmente antes de reintentar
+                    usleep(100 * pow(2, $retryCount)); // 100ms, 200ms, 400ms
+                    continue;
                 }
-
-                if ($product->stock < $item['qty']) {
-                    throw new Exception("Insufficient stock for product: {$product->name}");
-                }
-
-                $product->stock -= $item['qty'];
-                $product->save();
-
-                // Create Order Item
-                $orderItem = new OrderItem([
-                    'product_id' => $product->id,
-                    'quantity' => $item['qty'],
-                    'price_snapshot' => $product->price,
-                ]);
-
-                $order->items()->save($orderItem);
-
-                $total += $product->price * $item['qty'];
+                
+                // Si no es deadlock, relanzar la excepción
+                throw $e;
             }
-
-            // Update order total
-            $order->update(['total' => $total]);
-
-            return $order->load('items.product');
-        });
+        }
+        
+        throw new Exception("Failed to create order after {$maxRetries} retries.");
     }
+
+
     /**
      * Get paginated orders.
      *
