@@ -29,7 +29,7 @@ Finalmente, genera la clave de la aplicación con el siguiente comando:
 php artisan key:generate
 ```
 
-## Migraciones y Seeders
+## Migraciones 
 
 Para crear las tablas en la base de datos y poblar las tablas con datos de prueba (si aplica), ejecuta:
 
@@ -37,14 +37,6 @@ Para crear las tablas en la base de datos y poblar las tablas con datos de prueb
 # Ejecutar solo migraciones
 php artisan migrate
 
-# Ejecutar migraciones y seeders
-php artisan migrate --seed
-```
-
-Si necesitas refrescar la base de datos completa (borrar todo y volver a crear):
-
-```bash
-php artisan migrate:fresh --seed
 ```
 
 ## Running Tests
