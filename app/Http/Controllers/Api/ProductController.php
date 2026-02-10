@@ -9,6 +9,7 @@ use App\Http\Resources\PaginationResource;
 use App\Http\Requests\Product\IndexProductRequest;
 use App\Http\Requests\Product\StoreProductRequest;
 use App\Http\Requests\Product\UpdateProductRequest;
+use App\Http\Requests\Product\ShowProductRequest;
 use App\Repositories\ProductRepository;
 use Illuminate\Http\Request;
 
@@ -40,7 +41,7 @@ class ProductController extends Controller
         return response()->json([ProductResource::make($product)]);
     }
 
-    public function show(string $id)
+    public function show(ShowProductRequest $request, string $id)
     {
         $product = $this->productRepository->find($id);
 
