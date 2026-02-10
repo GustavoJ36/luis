@@ -119,4 +119,7 @@ php artisan migrate:fresh --seed
 Existe una colección de Postman llamada `Luis.postman_collection.json` para hacer pruebas, se encuentra en la raiz del proyecto.
 
 
+## Concurrencia
 
+Se utiliza el metodo ->lockForUpdate() para bloquear los productos que se van a utilizar en la orden, esto evita que se produzcan deadlocks. Se utiliza un bucle con reintentos para manejar los bloqueos y hacer 3 reintentos. No tengo claros los mensajes de error
+en esos casos y puse algunos tentativos generados con AI.
