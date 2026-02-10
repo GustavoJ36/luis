@@ -4,6 +4,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\ProductController;
 use App\Http\Controllers\Api\OrderController;
+use App\Http\Controllers\Api\ReportController;
 
 // Route::get('/user', function (Request $request) {
 //     return $request->user();
@@ -18,3 +19,5 @@ Route::put('products/{id}', [ProductController::class, 'update'])->name('product
 Route::get('orders', [OrderController::class, 'index'])->name('orders.index');
 Route::post('orders', [OrderController::class, 'store'])->name('orders.store');
 Route::get('orders/{id}', [OrderController::class, 'show'])->name('orders.show');
+
+Route::get('reports/top-products', [ReportController::class, 'topProducts'])->name('reports.top-products');
