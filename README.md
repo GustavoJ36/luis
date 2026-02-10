@@ -26,24 +26,34 @@ Sigue estos pasos para poner en marcha el proyecto utilizando Docker:
 
 ## Configuración del Entorno (.env)
 
-Para configurar las variables de entorno, primero debes crear el archivo `.env` copiando el contenido del archivo de ejemplo `.env.example`.
+Sigue estos pasos para configurar el entorno:
 
-Puedes hacerlo manualmente o ejecutar el siguiente comando en la terminal:
+1. **Crear archivo .env:**
+   Copia el contenido del archivo de ejemplo `.env.example`:
 
-```bash
-cp .env.example .env
-```
+   ```bash
+   cp .env.example .env
+   ```
 
-Una vez creado el archivo `.env`, aabrelo y configura las credenciales de tu base de datos en las siguientes líneas:
+2. **Cambiar el propietario de la carpeta:**
+   Luego de agregar el `.env`, se debe cambiar el owner de la carpeta del proyecto:
+   ```bash
+   sudo chown -R usuario_pc:www-data carpeta_del_proyecto
+   ```
+
+3. **Configurar credenciales:**
+   Una vez creado el archivo `.env`, ábrelo y configura las credenciales de tu base de datos:
 
 ```ini
 DB_CONNECTION=mysql
-DB_HOST=127.0.0.1
+DB_HOST=172.17.0.1
 DB_PORT=3306
-DB_DATABASE=nombre_de_tu_base_de_datos
-DB_USERNAME=tu_usuario
-DB_PASSWORD=tu_contraseña
+DB_DATABASE=laravel_react
+DB_USERNAME=root
+DB_PASSWORD=1234
 ```
+
+La IP `172.17.0.1` es la dirección IP del host (tu máquina) desde la perspectiva del contenedor Docker. El contenedor de la base de datos está en la misma red que el contenedor de la aplicación, por lo que puede acceder a la base de datos usando `DB_HOST=172.17.0.1`.
 
 Finalmente, genera la clave de la aplicación con el siguiente comando:
 
