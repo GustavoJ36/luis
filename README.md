@@ -24,6 +24,30 @@ Sigue estos pasos para poner en marcha el proyecto utilizando Docker:
    composer install
    ```
 
+## Contenedor de Base de Datos (Opcional)
+
+Si no cuentas con una base de datos MySQL local, puedes levantar una utilizando el contenedor incluido en el proyecto.
+
+### Instrucciones de Instalación:
+
+1. **Ingresar a la carpeta del contenedor:**
+   ```bash
+   cd db_container
+   ```
+
+2. **Levantar el contenedor:**
+   ```bash
+   docker compose up -d
+   ```
+
+El archivo `docker-compose.yaml` en esta carpeta está configurado para utilizar el siguiente volumen para persistencia de datos:
+```yaml
+volumes:
+  - /home/gustavo/container/mysql8/data:/var/lib/mysql
+```
+
+Cambiar acorde a la ruta actual del proyecto o donde quieras colocar el contenedor
+
 ## Configuración del Entorno (.env)
 
 Sigue estos pasos para configurar el entorno:
@@ -94,27 +118,5 @@ php artisan migrate:fresh --seed
 ## Colección de Postman
 Existe una colección de Postman llamada `Luis.postman_collection.json` para hacer pruebas, se encuentra en la raiz del proyecto.
 
-## Contenedor de Base de Datos (Opcional)
 
-Si no cuentas con una base de datos MySQL local, puedes levantar una utilizando el contenedor incluido en el proyecto.
-
-### Instrucciones de Instalación:
-
-1. **Ingresar a la carpeta del contenedor:**
-   ```bash
-   cd db_container
-   ```
-
-2. **Levantar el contenedor:**
-   ```bash
-   docker compose up -d
-   ```
-
-El archivo `docker-compose.yaml` en esta carpeta está configurado para utilizar el siguiente volumen para persistencia de datos:
-```yaml
-volumes:
-  - /home/gustavo/container/mysql8/data:/var/lib/mysql
-```
-
-Cambiar acorde a la ruta actual del proyecto o donde quieras colocar el contenedor
 
