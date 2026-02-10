@@ -2,6 +2,28 @@
 
 Este archivo contiene instrucciones básicas para configurar y ejecutar el proyecto localmente.
 
+## Instalación con Docker
+
+Sigue estos pasos para poner en marcha el proyecto utilizando Docker:
+
+1. **Construir y levantar los contenedores:**
+   Desde la raíz del proyecto, ejecuta el siguiente comando para construir las imágenes y levantar el entorno:
+   ```bash
+   docker compose up -d --build
+   ```
+
+2. **Acceder al contenedor de la aplicación:**
+   Para ejecutar comandos como Artisan o Composer, entra al shell del contenedor:
+   ```bash
+   docker exec -it laravelreact bash
+   ```
+
+3. **Instalar dependencias de PHP:**
+   Dentro del contenedor, ejecuta:
+   ```bash
+   composer install
+   ```
+
 ## Configuración del Entorno (.env)
 
 Para configurar las variables de entorno, primero debes crear el archivo `.env` copiando el contenido del archivo de ejemplo `.env.example`.
