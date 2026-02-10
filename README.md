@@ -2,6 +2,17 @@
 
 Este archivo contiene instrucciones básicas para configurar y ejecutar el proyecto localmente.
 
+## Índice
+
+- [Instalación con Docker](#instalación-con-docker)
+- [Contenedor de Base de Datos (Opcional)](#contenedor-de-base-de-datos-opcional)
+  - [Instrucciones de Instalación](#instrucciones-de-instalación)
+- [Configuración del Entorno (.env)](#configuración-del-entorno-env)
+- [Migraciones y Seeders](#migraciones-y-seeders)
+- [Colección de Postman](#colección-de-postman)
+- [Tests](#tests)
+- [Concurrencia](#concurrencia)
+
 ## Instalación con Docker
 
 Sigue estos pasos para poner en marcha el proyecto utilizando Docker:
