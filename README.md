@@ -55,6 +55,12 @@ DB_PASSWORD=1234
 
 La IP `172.17.0.1` es la dirección IP del host (tu máquina) desde la perspectiva del contenedor Docker. El contenedor de la base de datos está en la misma red que el contenedor de la aplicación, por lo que puede acceder a la base de datos usando `DB_HOST=172.17.0.1`.
 
+4. **Crear la base de datos manualmente:**
+   Debes crear manualmente la base de datos que corresponda con el nombre definido en la variable `DB_DATABASE` de tu archivo `.env`. Por ejemplo, si usas `mysql`, puedes ejecutar:
+   ```sql
+   CREATE DATABASE laravel_react;
+   ```
+
 Finalmente, genera la clave de la aplicación con el siguiente comando:
 
 ```bash
