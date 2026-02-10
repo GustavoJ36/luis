@@ -161,7 +161,7 @@ class OrderRepository
             ->join('orders', 'order_items.order_id', '=', 'orders.id')
             ->whereBetween('orders.created_at', [$from, $to])
             ->groupBy('product_id')
-            ->orderByRaw('SUM(quantity) DESC')
+            ->orderByRaw('total_sold DESC')
             ->limit($limit)
             ->with('product')
             ->get();
