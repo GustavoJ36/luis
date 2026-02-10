@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Repositories\OrderRepository;
-use Illuminate\Http\Request;
+use App\Http\Requests\Report\TopProductReportRequest;
 
 class ReportController extends Controller
 {
@@ -18,16 +18,11 @@ class ReportController extends Controller
     /**
      * Get top selling products within a date range.
      *
-     * @param Request $request
+     * @param TopProductReportRequest $request
      * @return \Illuminate\Http\JsonResponse
      */
-    public function topProducts(Request $request)
+    public function topProducts(TopProductReportRequest $request)
     {
-        $request->validate([
-            'from' => 'required|date',
-            'to' => 'required|date|after_or_equal:from',
-            'limit' => 'nullable|integer|min:1|max:50',
-        ]);
 
         $from = $request->input('from');
         $to = $request->input('to');
