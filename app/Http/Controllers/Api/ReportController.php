@@ -3,16 +3,16 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use App\Repositories\OrderRepository;
+use App\Repositories\ReportRepository;
 use App\Http\Requests\Report\TopProductReportRequest;
 
 class ReportController extends Controller
 {
-    private OrderRepository $orderRepository;
+    private ReportRepository $reportRepository;
 
-    public function __construct(OrderRepository $orderRepository)
+    public function __construct(ReportRepository $reportRepository)
     {
-        $this->orderRepository = $orderRepository;
+        $this->reportRepository = $reportRepository;
     }
 
     /**
@@ -28,7 +28,7 @@ class ReportController extends Controller
         $to = $request->input('to');
         $limit = $request->input('limit', 5);
 
-        $topProducts = $this->orderRepository->getTopProducts($from, $to, $limit);
+        $topProducts = $this->reportRepository->getTopProducts($from, $to, $limit);
 
         return response()->json($topProducts);
     }
