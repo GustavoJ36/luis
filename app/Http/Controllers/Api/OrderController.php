@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Order\StoreOrderRequest;
 use App\Http\Requests\Order\ShowOrderRequest;
 use App\Http\Resources\Order\OrderResource;
+use App\Http\Resources\PaginationResource;
 use App\Repositories\OrderRepository;
 use Illuminate\Http\JsonResponse;
 use Exception;
@@ -27,7 +28,7 @@ class OrderController extends Controller
     public function index()
     {
         $orders = $this->orderRepository->getAll();
-        return OrderResource::collection($orders);
+        return new PaginationResource($orders, OrderResource::class);
     }
 
     /**
