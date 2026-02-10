@@ -118,6 +118,17 @@ php artisan migrate:fresh --seed
 ## Colección de Postman
 Existe una colección de Postman llamada `Luis.postman_collection.json` para hacer pruebas, se encuentra en la raiz del proyecto.
 
+## Tests
+
+Para ejecutar los tests del proyecto, debes hacerlo **dentro del contenedor** de la aplicación:
+
+```bash
+# Primero, accede al contenedor
+docker exec -it laravelreact bash
+
+# Luego, ejecuta los tests
+./vendor/bin/phpunit
+```
 
 ## Concurrencia
 
