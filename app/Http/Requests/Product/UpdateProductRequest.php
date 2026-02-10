@@ -24,12 +24,20 @@ class UpdateProductRequest extends FormRequest
     public function rules(): array
     {
         return [
+            'id' => 'required|exists:products,id',
             'name' => 'required|string|max:255',
             // Ignore current product id for uniqueness check
             'sku' => 'required|string|max:255|unique:products,sku,' . $this->id,
             'price' => 'required|numeric|min:0',
             'stock' => 'required|integer|min:0',
         ];
+    }
+
+    protected function prepareForValidation()
+    {
+        $this->merge([
+            'id' => $this->route('id'),
+        ]);
     }
 
     protected function failedValidation(Validator $validator)
