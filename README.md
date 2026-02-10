@@ -51,6 +51,12 @@ Finalmente, genera la clave de la aplicación con el siguiente comando:
 php artisan key:generate
 ```
 
+**Importante:** Luego de configurar o modificar el archivo `.env`, se recomienda limpiar la caché de la configuración para asegurar que los cambios surtan efecto:
+
+```bash
+php artisan config:clear
+```
+
 ## Migraciones y Seeders
 
 Para crear las tablas en la base de datos y poblar las tablas con datos de prueba (si aplica), ejecuta:
@@ -71,6 +77,3 @@ php artisan migrate:fresh --seed
 
 
 
-```bash
-composer test
-```
