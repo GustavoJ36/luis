@@ -47,15 +47,7 @@ Si necesitas refrescar la base de datos completa (borrar todo y volver a crear):
 php artisan migrate:fresh --seed
 ```
 
-## Running Tests
 
-Para ejecutar las pruebas automatizadas del proyecto, utiliza el siguiente comando:
-
-```bash
-php artisan test
-```
-
-También puedes usar el script de composer configurado en el proyecto:
 
 ```bash
 composer test
