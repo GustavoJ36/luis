@@ -91,5 +91,5 @@ Si necesitas refrescar la base de datos completa (borrar todo y volver a crear):
 php artisan migrate:fresh --seed
 ```
 
-
-
+## Colección de Postman
+Existe una colección de Postman llamada `Luis.postman_collection.json` para hacer pruebas, se encuentra en la raiz del proyecto.
