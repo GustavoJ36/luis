@@ -38,20 +38,20 @@ class ProductController extends Controller
     {
         $product = $this->productRepository->create($request->all());
 
-        return response()->json([ProductResource::make($product)]);
+        return new ProductResource($product);
     }
 
     public function show(ShowProductRequest $request, string $id)
     {
         $product = $this->productRepository->find($id);
 
-        return response()->json([ProductResource::make($product)]);
+        return new ProductResource($product);
     }
 
     public function update(UpdateProductRequest $request, string $id)
     {
         $product = $this->productRepository->update($id, $request->all());
 
-        return response()->json([ProductResource::make($product)]);
+        return new ProductResource($product);
     }
 }

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Order\StoreOrderRequest;
+use App\Http\Requests\Order\ShowOrderRequest;
 use App\Http\Resources\Order\OrderResource;
 use App\Repositories\OrderRepository;
 use Illuminate\Http\JsonResponse;
@@ -35,15 +36,9 @@ class OrderController extends Controller
      * @param int $id
      * @return OrderResource|JsonResponse
      */
-    public function show($id)
+    public function show(ShowOrderRequest $request, $id)
     {
         $order = $this->orderRepository->findById($id);
-
-        if (!$order) {
-            return response()->json([
-                'message' => 'Order not found'
-            ], 404);
-        }
 
         return new OrderResource($order);
     }
